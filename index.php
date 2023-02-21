@@ -19,8 +19,12 @@
     // class include
     require_once 'class/User.php';
     // instance
-    $user = new User();
     session_start();
+    $user = new User();
+    // if connected go to todolist.php
+    if ($user->isConnected()) {
+        header('Location: todolist.php');
+    }
     require_once 'includes/header.php';
     ?>
     <!-- /Header -->

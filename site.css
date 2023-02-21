@@ -87,28 +87,6 @@ header {
   align-content: center;
 }
 
-#center {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10%;
-  line-height: 1;
-}
-
-header ul {
-  list-style: none;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  align-items: flex-end;
-}
-
-header li {
-  padding-right: 10px;
-  line-height: 2;
-}
-
 header button {
   background-color: #7d7d7d;
   border: 1px solid #7d7d7d9a;
@@ -127,84 +105,6 @@ header button {
 
 header button:hover {
   background-color: #a6a6a6;
-}
-
-.a_head {
-  color: #333;
-  transition: 0.5s;
-  padding: 10px 15px;
-  margin: 0px 10px;
-  font-size: 20px;
-}
-
-.a_head:hover {
-  background-color: #7d7d7d9a;
-  border-radius: 15px;
-  padding: 10px 15px;
-}
-
-.mobile {
-  display: none;
-}
-
-.openBtn {
-  display: none;
-}
-
-/* Media pour menu burger */
-@media (max-width: 970px) {
-  .ordi {
-    display: none;
-  }
-
-  .mobile {
-    display: block;
-    width: 70%;
-    height: auto;
-    position: fixed;
-    left: 15%;
-    z-index: 1;
-    padding: 0 5%;
-    background-color: #fafafa;
-    /* background-color: #1dc439; */
-
-    transition: transform 0.6s ease-in-out;
-    -webkit-transition: transform 0.6s ease-in-out;
-    transform: translateX(100%);
-    -webkit-transform: translateX(110%);
-  }
-
-  .mobile.open {
-    transform: translateX(0%);
-    -webkit-transform: translateX(0%);
-    display: block;
-  }
-
-  .mobile ul {
-    position: absolute;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    top: 0%;
-    background-color: #fafafa;
-    /* background-color: #1dc439; */
-    color: #333;
-  }
-
-  .burger-icon span {
-    display: block;
-    width: 35px;
-    height: 5px;
-    background-color: black;
-    margin: 6px 0;
-  }
-
-  #openBtn {
-    display: block;
-    width: 35px;
-    height: 30px;
-    margin: 6px 0;
-  }
 }
 
 /* *****************
@@ -268,6 +168,7 @@ footer {
 main {
   display: block;
   min-height: 92vh;
+  margin-top: 2%;
   margin-bottom: 3%;
   color: #fafafa;
 }
@@ -288,7 +189,7 @@ main button {
 }
 
 main button:hover {
-  background-color: #a6a6a6;
+  background-color: #dadada;
 }
 
 .center {
@@ -309,17 +210,13 @@ main button:hover {
   margin-top: 5%;
 }
 
-#goal {
-  margin-top: 5%;
-}
-
 /* *****************
     Formulaires
 ****************** */
 
 .background_form {
   /* width: 50%; */
-  /* margin: auto; */
+  margin-top: 2%;
   padding: 20px;
   background-color: #fafafa;
   border-radius: 10px;
@@ -345,7 +242,7 @@ form label {
 
 form input {
   font-size: 20px;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #7d7d7d;
   border-radius: 5px;
@@ -356,7 +253,7 @@ form input[type="submit"] {
   color: #fafafa;
   font-size: 20px;
   font-weight: bold;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 5px;
   margin-right: 10px;
   margin-left: 10px;
@@ -386,10 +283,6 @@ form input[type="submit"]:hover {
   margin: auto;
 }
 
-#inscription form input[type="submit"] {
-  width: 30%;
-}
-
 /* Partie Connexion */
 #connexion {
   display: flex;
@@ -407,159 +300,57 @@ form input[type="submit"]:hover {
   margin: auto;
 }
 
-#connexion form input[type="submit"] {
-  width: 30%;
-}
-
 /* *****************
-    Profil
+    ToDoList
 ****************** */
 
-.profil p {
-  font-size: 24px;
-  color: #333;
-}
-
-/* partie login */
-#login {
-  width: 50%;
-  margin: auto;
-  margin-bottom: 3%;
-}
-
-#login form {
+.toggle {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle input {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#todolist form {
+  display: flex;
+  flex-flow: row wrap;
   justify-content: space-evenly;
   align-items: center;
 }
 
-#login form input {
-  width: 60%;
-  margin: auto;
-}
-
-#login form input[type="submit"] {
-  width: 30%;
-}
-
-/* partie password */
-
-#password {
-  width: 50%;
-  margin: auto;
-}
-
-#password form {
+#toDo,
+#done {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
   justify-content: space-evenly;
   align-items: center;
+  gap: 2%;
 }
 
-#password form input {
-  width: 60%;
-  margin: auto;
+#toDo > *,
+#done > * {
+  flex: 1 1 500px;
 }
 
-#password form input[type="submit"] {
-  width: 30%;
-}
-
-/* *****************
-    page admin
-****************** */
-table,
-th,
-td {
-  padding: 10px;
-  border: 1px solid #7d7d7d;
-  border-collapse: collapse;
-  font-size: 20px;
-  border-radius: 10px;
-}
-
-table {
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-#table_admin {
-  background-color: #fafafa;
+.section_Task {
+  background-color: #b1b1b1;
   border-radius: 10px;
   box-shadow: 0 0 10px #7d7d7d;
-  width: 50%;
-  margin: auto;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  padding-left: 0.5%;
+  margin-bottom: 10px;
+  padding: 15px;
 }
 
-/* *****************
-    livre d'or
-****************** */
-
-#livre-or h1,
-#leaveComment p {
-  color: #fafafa;
+.fa-check {
+  color: green;
+  cursor: pointer;
 }
 
-.commentaires tbody,
-.commentaires thead {
-  display: block;
-}
-
-.commentaires tbody {
-  height: 40vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.commentaires {
-  width: 60%;
-  margin: auto;
-  border: 1px solid #7d7d7d;
-  background-color: #fafafa;
-  /* border-radius: 15px; */
-  box-shadow: 0 0 10px #7d7d7d;
-  color: #333;
-}
-
-.commentaires th {
-  border-bottom: #1363df;
-  border-bottom-style: solid;
-  border-bottom-width: 1.5px;
-  border-left: none;
-  border-right: none;
-}
-
-.commentaires td {
-  padding: 20px;
-  /* border-bottom: #1363df; */
-  border-bottom: #ff000033;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-left: none;
-  border-right: none;
-}
-
-.date {
-  width: 15%;
-}
-
-.user {
-  width: 15%;
-}
-
-.comm {
-  width: 70%;
-}
-
-/* **************************
-    page commentaire
-*************************** */
-
-#commentaire {
-  width: 50%;
+.fa-xmark {
+  color: red;
+  cursor: pointer;
 }
