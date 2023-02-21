@@ -89,6 +89,16 @@ class User
             ':password' => $password,
         ));
 
+        // récupération de l'id
+        $this->id = $this->bdd->lastInsertId();
+
+        // rajout de l'id dans la colonne id_droit
+        $requete = "UPDATE utilisateurs SET id_droit = :id WHERE id = :id";
+        $update = $this->bdd->prepare($requete);
+        $update->execute(array(
+            ':id' => $this->id,
+        ));
+
         echo "ok"; // inscription réussie
 
         // fermer la connexion
@@ -126,6 +136,7 @@ class User
                 'password' => $fetch_assoc['password'],
             ];
             // connexion réussie
+
             $error = "ok";
             echo $error;
         } else {
@@ -191,5 +202,82 @@ class User
             $reponse = "indispo";
             echo $reponse; // login indisponible
         }
+    }
+
+    // récupérer tous les users
+    public function getAllUsers()
+    {
+        // requête pour récupérer tous les utilisateurs
+        $requete = "SELECT * FROM utilisateurs";
+
+        // préparation de la requête
+        $select = $this->bdd->prepare($requete);
+
+        // exécution de la requête
+        $select->execute();
+
+        // récupération du tableau
+        $fetch = $select->fetchAll(PDO::FETCH_ASSOC);
+
+        // fermer la connexion
+        $this->bdd = null;
+
+        return $fetch;
+    }
+
+    // récupérer la colonne id_droit de l'utilisateur connecté
+    public function getDroit()
+    {
+        // requête pour récupérer l'id_droit de l'utilisateur connecté
+        $requete = "SELECT id_droit FROM utilisateurs where id = :id";
+
+        // préparation de la requête
+        $select = $this->bdd->prepare($requete);
+
+        // exécution de la requête avec liaison des paramètres
+        $select->execute(array(':id' => $this->id));
+
+        // récupération du tableau
+        $fetch = $select->fetch(PDO::FETCH_ASSOC);
+
+        // fermer la connexion
+        $this->bdd = null;
+
+        return $fetch;
+    }
+
+    // ajouter les droits à un utilisateur
+    public function addDroit($idOther)
+    {
+        $requete = "SELECT id_droit FROM utilisateurs where id = :id";
+
+        // préparation de la requête
+        $select = $this->bdd->prepare($requete);
+
+        // exécution de la requête avec liaison des paramètres
+        $select->execute(array(':id' => $idOther));
+
+        // récupération du tableau
+        $droits = $select->fetch(PDO::FETCH_ASSOC);
+
+        // ajout de l'id de l'utilisateurs connecté à la suite de $droits, séparé par une virgule
+        $droits['id_droit'] .= ',' . $this->id;
+
+        // requête pour ajouter les droits à l'utilisateur
+        $requete2 = "UPDATE utilisateurs SET id_droit = :id_droit WHERE id = :id";
+
+        // préparation de la requête
+        $update = $this->bdd->prepare($requete2);
+
+        // exécution de la requête avec liaison des paramètres
+        $update->execute(array(
+            ':id_droit' => $droits['id_droit'],
+            ':id' => $idOther,
+        ));
+
+        // fermer la connexion
+        $this->bdd = null;
+
+        echo "ok"; // droits ajoutés
     }
 }

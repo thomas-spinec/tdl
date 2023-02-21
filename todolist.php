@@ -33,6 +33,31 @@
     <main>
         <section class="centrage">
             <section id="todolist">
+                <section id="droit">
+                    <section class="background_form">
+                        <div class="toggle">
+                            <h2>donner les droits</h2>
+                            <input type="checkbox" name="" id="slideRights">
+                        </div>
+                        <form action="" id="formRights">
+                            <div id="usersRights"></div>
+                            <input type="submit" value="donner les droits" name="send" id="btnRights">
+                        </form>
+                    </section>
+                    <section class="background_form">
+                        <div class="toggle">
+                            <h2>modifier les tâches de :</h2>
+                            <input type="checkbox" name="" id="slideUsersTasks">
+                        </div>
+                        <!-- Menu déroulant qui contiendra ceux qu'on peux gérer -->
+                        <form action="" id="formUsersTasks">
+                            <select name="user" id="usersTasks">
+                            </select>
+                            <input type="submit" value="modifier les tâches" name="send" id="btnUserTasks">
+                        </form>
+
+                    </section>
+                </section>
                 <section class="background_form">
                     <h1>ToDoList</h1>
                     <form action="" method="post" id="formTask">

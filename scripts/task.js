@@ -1,9 +1,19 @@
 // attente du chargement du DOM
 window.addEventListener("load", function () {
   /* récupération des éléments */
-  // formulaire
+  let idUser;
+  // formulaires
   const formTask = document.querySelector("#formTask");
-  const btnFormTask = document.querySelector("#btnAdd");
+  const formRights = document.querySelector("#formRights");
+  let usersRights = formRights.querySelector("#usersRights");
+  const formUsersTasks = document.querySelector("#formUsersTasks");
+  let usersTasks = formUsersTasks.querySelector("#usersTasks");
+
+  // liste des utilisateurs pour donner les droits
+  const slideRights = document.querySelector("#slideRights");
+
+  // liste contenant les différentes personnes que l'on peut gérer
+  const slideUsersTasks = document.querySelector("#slideUsersTasks");
 
   // liste des tâches à faire
   const slideToDo = document.querySelector("#slideToDo");
@@ -41,8 +51,15 @@ window.addEventListener("load", function () {
 
   // fonction d'affichage des tâches
   function displayTasks() {
+    // récupération de l'id
+    let idSelected = getTasksSelected();
+    console.log(idSelected);
+    // envoi des données au serveur
+    let data = new FormData();
+    data.append("idUser", idSelected);
     fetch("todo.php", {
-      method: "GET",
+      method: "POST",
+      body: data,
     })
       .then((response) => response.json())
       .then((response) => {
@@ -148,7 +165,136 @@ window.addEventListener("load", function () {
       .catch((error) => console.log(error));
   }
 
-  // function de slide pour la section todo et done
+  // fonction qui récupère l'id de l'utilisateur connecté
+  function getIdUser() {
+    let data = new FormData();
+    data.append("getId", "id");
+    fetch("verif.php", {
+      method: "POST",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        idUser = response;
+      })
+      .catch((error) => console.log(error));
+  }
+
+  // fonction pour récupérer les utilisateurs (et leur id) seulement s'ils n'ont pas encore les droits de l'utilisateur connecté et les mettre dans le formulaire
+  function getUsers() {
+    fetch("getUsers.php", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        // on vide la liste
+        usersRights.innerHTML = "";
+        // on parcourt les utilisateurs
+        response.forEach((user) => {
+          // Si l'id de l'utilisateur n'est pas le même on vérifie les id présent dans la colonne id_droit
+          if (user.id != idUser) {
+            // On vérifie que la personne n'a pas déjà l'id de la personne connecté dans la colonne id_droit
+            if (user.id_droit.includes(idUser) == false) {
+              // on crée les éléments de type checkbox ayant pour value l'id, puis un texte contenant le login
+              let checkbox = document.createElement("input");
+              let label = document.createElement("label");
+              checkbox.setAttribute("type", "checkbox");
+              checkbox.setAttribute("value", user.id);
+              checkbox.setAttribute("name", "usersRights[]");
+              label.textContent = user.login;
+              // on ajoute les éléments dans la liste
+              usersRights.appendChild(checkbox);
+              usersRights.appendChild(label);
+              usersRights.appendChild(document.createElement("br"));
+            } else {
+              // console.log("il a déjà les droits");
+            }
+          } else {
+            // console.log("c'est le même");
+          }
+        });
+      })
+      .catch((error) => console.log(error));
+  }
+
+  // fonction pour ajouter les droits aux personnes qui sont cochées
+  function addRights() {
+    // on récupère les utilisateurs cochés
+    let users = document.querySelectorAll(
+      "input[name='usersRights[]']:checked"
+    );
+    // on parcourt les utilisateurs cochés
+    users.forEach((user) => {
+      // on fetch verif.php pour chaque id
+      let data = new FormData();
+      data.append("idOther", user.value);
+      data.append("addDroit", "send");
+      fetch("verif.php", {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => response.text())
+        .then((response) => {
+          response = response.trim();
+          if (response == "ok") {
+            // console.log("ok");
+            // on display a nouveau les users
+            getUsers();
+          } else {
+            formTask.nextElementSibling.innerHTML =
+              "Une erreur est survenuelors de l'ajout des droits";
+          }
+        })
+        .catch((error) => console.log(error));
+    });
+  }
+
+  // fonction pour créer la liste déroulante permettant de sélectionner l'utilisateurs dont on va gérer les taches
+  function getUsersList() {
+    // on commence par récupérer les droits de l'utilisateurs connecté avec un fetch de la page getDroits.php
+    fetch("getDroits.php", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        $droits = response.id_droit;
+        // on récupère les utilisateurs
+        fetch("getUsers.php", {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            // on vide la liste
+            usersTasks.innerHTML = "";
+            // on parcourt les utilisateurs
+            response.forEach((user) => {
+              // on vérifie que l'id de l'utilisateur est présent dans la colonne id_droit
+              if ($droits.includes(user.id)) {
+                // on crée les éléments de type option ayant pour value l'id, puis un texte contenant le login avec par défaut celui qui correspond à la personne connecté
+                let option = document.createElement("option");
+                option.setAttribute("value", user.id);
+                option.textContent = user.login;
+                // on ajoute les éléments dans la liste
+                if (user.id == idUser) {
+                  option.setAttribute("selected", "selected");
+                }
+                usersTasks.appendChild(option);
+              }
+            });
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
+  }
+
+  // fonction pour récupérer les tâches de l'utilisateur sélectionné
+  function getTasksSelected() {
+    // on récupère l'id de l'utilisateur sélectionné
+    idSelected = usersTasks.options[usersTasks.selectedIndex];
+    return idSelected;
+  }
+
+  // function de slide pour la section todo, done ,formRights et formUsersTasks
   $(slideToDo).click(function () {
     $(toDo).slideToggle();
   });
@@ -157,8 +303,25 @@ window.addEventListener("load", function () {
     $(done).slideToggle();
   });
 
-  // on affiche les tâches
+  $(slideRights).click(function () {
+    $(formRights).slideToggle();
+  });
+
+  $(slideUsersTasks).click(function () {
+    $(formUsersTasks).slideToggle();
+  });
+
+  // de base on cache le formulaire de droits et de choix de user
+  $(formRights).hide();
+  $(formUsersTasks).hide();
+
+  // on lance toutes les fonctions que l'on doit lancer au chargement
+  //   console.log(usersTasks.option.selected.value);
+  getIdUser();
+  getUsers();
+  getUsersList();
   displayTasks();
+  console.log(usersTasks.value);
 
   // on ajoute un écouteur d'événement sur le bouton d'ajout de tâche
   formTask.addEventListener("submit", function (e) {
@@ -182,5 +345,12 @@ window.addEventListener("load", function () {
     if (e.target.classList.contains("btn-delete")) {
       deleteTask(e.target.getAttribute("data-id"));
     }
+  });
+
+  // on ajoute un écouteur d'événement lors du submit d'ajout des droits
+  formRights.addEventListener("submit", function (e) {
+    e.preventDefault();
+    addRights();
+    getUsers();
   });
 });

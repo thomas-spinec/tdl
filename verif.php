@@ -11,6 +11,12 @@ if (isset($_POST['verifLogin'])) {
     $user->isUserExist($login);
 }
 
+// récupération de l'id de l'utilisateur connecté
+if (isset($_POST['getId'])) {
+    $id = $user->getId();
+    echo json_encode($id);
+}
+
 // inscription
 if (isset($_POST['insc'])) {
     $login = $_POST['login'];
@@ -40,4 +46,10 @@ if (isset($_POST['modifPass'])) {
     $password = $_POST['password'];
     $newPassword = $_POST['newPassword'];
     $user->updatePassword($password, $newPassword);
+}
+
+// ajouter un id dans la colonne des droits d'un utilisateurs
+if (isset($_POST['addDroit'])) {
+    $idOther = $_POST['idOther'];
+    $user->addDroit($idOther);
 }

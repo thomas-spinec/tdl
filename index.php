@@ -10,7 +10,6 @@
     <link rel="icon" type="images/png" sizes="64x64" href="img/Logo_onglet.png" />
     <script src="scripts/jquery-3.6.3.min.js"></script>
     <script src="scripts/user.js"></script>
-    <script src="scripts/menu.js"></script>
 </head>
 
 <body>
