@@ -6,9 +6,11 @@ window.addEventListener("load", function () {
   const btnFormTask = document.querySelector("#btnAdd");
 
   // liste des tâches à faire
+  const slideToDo = document.querySelector("#slideToDo");
   const toDo = document.querySelector("#toDo");
 
   // liste des tâches faites
+  const slideDone = document.querySelector("#slideDone");
   const done = document.querySelector("#done");
 
   // fonction d'ajout d'une tâche dans la bdd
@@ -146,11 +148,20 @@ window.addEventListener("load", function () {
       .catch((error) => console.log(error));
   }
 
+  // function de slide pour la section todo et done
+  $(slideToDo).click(function () {
+    $(toDo).slideToggle();
+  });
+
+  $(slideDone).click(function () {
+    $(done).slideToggle();
+  });
+
   // on affiche les tâches
   displayTasks();
 
   // on ajoute un écouteur d'événement sur le bouton d'ajout de tâche
-  btnFormTask.addEventListener("click", function (e) {
+  formTask.addEventListener("submit", function (e) {
     e.preventDefault();
     addTask();
   });
