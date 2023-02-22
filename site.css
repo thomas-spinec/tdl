@@ -300,6 +300,29 @@ form input[type="submit"]:hover {
   margin: auto;
 }
 
+/* Media pour la connexion et l'inscription */
+@media screen and (max-width: 800px) {
+  #inscription {
+    flex-flow: column-reverse wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #inscription section {
+    flex-basis: 100%;
+  }
+
+  #connexion {
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #connexion section {
+    flex-basis: 100%;
+  }
+}
+
 /* *****************
     ToDoList
 ****************** */
