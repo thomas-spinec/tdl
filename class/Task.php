@@ -45,68 +45,6 @@ class Task
         }
     }
 
-    /* Getter */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getTask()
-    {
-        return $this->task;
-    }
-
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    public function getDateCrea()
-    {
-        return $this->dateCrea;
-    }
-
-    public function getDateRea()
-    {
-        return $this->dateRea;
-    }
-
-    public function getUser_id()
-    {
-        return $this->user_id;
-    }
-
-    /* Setter */
-    // public function setId($id)
-    // {
-    //     $this->id = $id;
-    // }
-
-    // public function setTask($task)
-    // {
-    //     $this->task = $task;
-    // }
-
-    // public function setState($state)
-    // {
-    //     $this->state = $state;
-    // }
-
-    // public function setDateCrea($dateCrea)
-    // {
-    //     $this->dateCrea = $dateCrea;
-    // }
-
-    // public function setDateRea($dateRea)
-    // {
-    //     $this->dateRea = $dateRea;
-    // }
-
-    // public function setUser_id($user_id)
-    // {
-    //     $this->user_id = $user_id;
-    // }
-
     /* Méthodes */
 
     //Ajout d'une tâche

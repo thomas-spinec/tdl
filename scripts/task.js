@@ -1,7 +1,9 @@
 // attente du chargement du DOM
 window.addEventListener("load", function () {
   /* récupération des éléments */
-  let idUser;
+  let userId = "vide";
+  let idConnected = document.querySelector("#hidden").innerHTML;
+  let titlePerso = document.querySelector("#title");
   // formulaires
   const formTask = document.querySelector("#formTask");
   const formRights = document.querySelector("#formRights");
@@ -24,12 +26,16 @@ window.addEventListener("load", function () {
   const done = document.querySelector("#done");
 
   // fonction d'ajout d'une tâche dans la bdd
-  function addTask() {
+  function addTask(id) {
+    // si id n'est pas définie on remplace par "currentId"
+    if (id == undefined) {
+      id = "currentId";
+    }
     // récupération des données du formulaire
     let data = new FormData(formTask);
     data.append("send", "add");
     // envoi des données au serveur
-    fetch("manageTask.php", {
+    fetch(`manageTask.php?User=${id}`, {
       method: "POST",
       body: data,
     })
@@ -40,7 +46,7 @@ window.addEventListener("load", function () {
           // on vide le formulaire
           formTask.reset();
           // on display a nouveau les tâches
-          displayTasks();
+          displayTasks(id);
         } else {
           formTask.nextElementSibling.innerHTML =
             "Une erreur est survenue, votre tâche n'a pas pu être ajoutée";
@@ -50,16 +56,14 @@ window.addEventListener("load", function () {
   }
 
   // fonction d'affichage des tâches
-  function displayTasks() {
-    // récupération de l'id
-    let idSelected = getTasksSelected();
-    console.log(idSelected);
-    // envoi des données au serveur
-    let data = new FormData();
-    data.append("idUser", idSelected);
-    fetch("todo.php", {
-      method: "POST",
-      body: data,
+  function displayTasks(id) {
+    // si l'id n'est pas défini, on inscrit "currentId"
+    if (id == undefined) {
+      id = "currentId";
+    }
+    // récupération des données
+    fetch(`todo.php?User=${id}`, {
+      method: "GET",
     })
       .then((response) => response.json())
       .then((response) => {
@@ -131,8 +135,12 @@ window.addEventListener("load", function () {
       .then((response) => {
         response = response.trim();
         if (response == "ok") {
-          // on display a nouveau les tâches
-          displayTasks();
+          // on display a nouveau les tâches pour la bonne personne
+          if (userId == "vide") {
+            displayTasks();
+          } else {
+            displayTasks(userId);
+          }
         } else {
           formTask.nextElementSibling.innerHTML =
             "Une erreur est survenue, votre tâche n'a pas pu être supprimée";
@@ -155,8 +163,12 @@ window.addEventListener("load", function () {
       .then((response) => {
         response = response.trim();
         if (response == "ok") {
-          // on display a nouveau les tâches
-          displayTasks();
+          // on display a nouveau les tâches pour la bonne personne
+          if (userId == "vide") {
+            displayTasks();
+          } else {
+            displayTasks(userId);
+          }
         } else {
           formTask.nextElementSibling.innerHTML =
             "Une erreur est survenue, le statut de votre tâche n'a pas pu être modifié";
@@ -166,22 +178,21 @@ window.addEventListener("load", function () {
   }
 
   // fonction qui récupère l'id de l'utilisateur connecté
-  function getIdUser() {
-    let data = new FormData();
-    data.append("getId", "id");
-    fetch("verif.php", {
-      method: "POST",
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        idUser = response;
-      })
-      .catch((error) => console.log(error));
-  }
+  //   async function getIdUser() {
+  //     let data = new FormData();
+  //     data.append("getId", "id");
+  //     let request = await fetch("verif.php", {
+  //       method: "POST",
+  //       body: data,
+  //     });
+  //     let id = await request.json();
+  //     console.log(id);
+  //     return id;
+  //     //   .catch((error) => console.log(error));
+  //   }
 
   // fonction pour récupérer les utilisateurs (et leur id) seulement s'ils n'ont pas encore les droits de l'utilisateur connecté et les mettre dans le formulaire
-  function getUsers() {
+  function getUsers(idConnected) {
     fetch("getUsers.php", {
       method: "GET",
     })
@@ -192,9 +203,9 @@ window.addEventListener("load", function () {
         // on parcourt les utilisateurs
         response.forEach((user) => {
           // Si l'id de l'utilisateur n'est pas le même on vérifie les id présent dans la colonne id_droit
-          if (user.id != idUser) {
+          if (user.id != idConnected) {
             // On vérifie que la personne n'a pas déjà l'id de la personne connecté dans la colonne id_droit
-            if (user.id_droit.includes(idUser) == false) {
+            if (user.id_droit.includes(idConnected) == false) {
               // on crée les éléments de type checkbox ayant pour value l'id, puis un texte contenant le login
               let checkbox = document.createElement("input");
               let label = document.createElement("label");
@@ -250,7 +261,7 @@ window.addEventListener("load", function () {
   }
 
   // fonction pour créer la liste déroulante permettant de sélectionner l'utilisateurs dont on va gérer les taches
-  function getUsersList() {
+  function getUsersList(idConnected) {
     // on commence par récupérer les droits de l'utilisateurs connecté avec un fetch de la page getDroits.php
     fetch("getDroits.php", {
       method: "GET",
@@ -275,7 +286,7 @@ window.addEventListener("load", function () {
                 option.setAttribute("value", user.id);
                 option.textContent = user.login;
                 // on ajoute les éléments dans la liste
-                if (user.id == idUser) {
+                if (user.id == idConnected) {
                   option.setAttribute("selected", "selected");
                 }
                 usersTasks.appendChild(option);
@@ -290,9 +301,21 @@ window.addEventListener("load", function () {
   // fonction pour récupérer les tâches de l'utilisateur sélectionné
   function getTasksSelected() {
     // on récupère l'id de l'utilisateur sélectionné
-    idSelected = usersTasks.options[usersTasks.selectedIndex];
+    idSelected = usersTasks.value;
+    // on récupère le login de l'utilisateur sélectionné
+    loginSelected = usersTasks.options[usersTasks.selectedIndex].text;
+    // on change le texte de titlePerso
+    titlePerso.innerHTML = "ToDoList de " + loginSelected;
+    // on retourne l'id
     return idSelected;
+    // displayTasks(idSelected);
   }
+
+  formUsersTasks.addEventListener("submit", function (e) {
+    e.preventDefault();
+    userId = getTasksSelected();
+    displayTasks(userId);
+  });
 
   // function de slide pour la section todo, done ,formRights et formUsersTasks
   $(slideToDo).click(function () {
@@ -316,17 +339,19 @@ window.addEventListener("load", function () {
   $(formUsersTasks).hide();
 
   // on lance toutes les fonctions que l'on doit lancer au chargement
-  //   console.log(usersTasks.option.selected.value);
-  getIdUser();
-  getUsers();
-  getUsersList();
+  getUsers(idConnected);
+  getUsersList(idConnected);
   displayTasks();
-  console.log(usersTasks.value);
 
   // on ajoute un écouteur d'événement sur le bouton d'ajout de tâche
   formTask.addEventListener("submit", function (e) {
     e.preventDefault();
-    addTask();
+    // si userId est déclaré on le passe en paramètre
+    if (userId == "vide") {
+      addTask();
+    } else {
+      addTask(userId);
+    }
   });
 
   // on ajoute un écouteur d'événement sur la liste des tâches à faire

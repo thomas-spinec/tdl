@@ -31,6 +31,7 @@
 
     <!-- Main -->
     <main>
+        <p id="hidden"><?= $user->getId() ?></p>
         <section class="centrage">
             <section id="todolist">
                 <section id="droit">
@@ -59,7 +60,7 @@
                     </section>
                 </section>
                 <section class="background_form">
-                    <h1>ToDoList</h1>
+                    <h1 id="title">ToDoList de <?= $user->getLogin() ?></h1>
                     <form action="" method="post" id="formTask">
                         <label for="task">Tâche:</label>
                         <input type="text" name="task" class="task" placeholder="Tâche" required>

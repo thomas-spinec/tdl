@@ -11,7 +11,11 @@ $task = new Task();
 if (isset($_POST["send"])) {
     $text = $_POST["task"];
     $state = (int)$_POST["state"];
-    $userId = $user->getId();
+    if ($_GET["User"] == "currentId") {
+        $userId = $_SESSION["user"]["id"];
+    } else {
+        $userId = $_GET["User"];
+    }
     $task->addTask($text, $state, $userId);
 }
 
