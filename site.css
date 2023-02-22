@@ -4,9 +4,7 @@
 
 body {
   background-color: #333;
-  /* font-family: "Open Sans", sans-serif; */
-  /* font-size: 16px;
-    color: #333; */
+  font-family: "Open Sans", sans-serif;
   margin: 0;
   padding: 0;
   font-size: 20px;
@@ -62,7 +60,14 @@ p {
   text-align: center;
   width: 90%;
   margin: auto;
-  margin-bottom: 2%;
+  /* margin-bottom: 2%; */
+}
+
+/* media pour la taille de la police */
+@media screen and (max-width: 600px) {
+  body {
+    font-size: 12px;
+  }
 }
 
 /* *****************
@@ -73,18 +78,29 @@ header {
   display: block;
   background-color: #fafafa;
   color: #333;
-  /* position: fixed; */
   width: 100%;
   top: 0;
   clear: both;
 }
 
-.flex {
-  text-align: center;
+header > .container {
+  height: 8vh;
+}
+
+header .flex {
+  /* text-align: center; */
   display: flex;
   justify-content: space-around;
   align-items: center;
   align-content: center;
+  height: 100%;
+}
+
+#center {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 header button {
@@ -116,14 +132,18 @@ footer {
   color: #333;
   text-align: center;
   padding: 10px;
-  padding-bottom: 1%;
   font-size: 20px;
+}
+
+footer .centrage {
+  width: 100%;
 }
 
 .flex_footer {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  align-content: center;
 }
 
 .logo {
@@ -140,7 +160,8 @@ footer {
 }
 
 .link img {
-  max-width: 10vw;
+  max-width: 5vw;
+  width: auto;
   cursor: pointer;
 }
 
@@ -158,7 +179,7 @@ footer {
 }
 
 #perso img {
-  max-width: 20vw;
+  max-width: 10vw;
 }
 
 /* *****************
@@ -169,7 +190,7 @@ main {
   display: block;
   min-height: 92vh;
   margin-top: 2%;
-  margin-bottom: 3%;
+  margin-bottom: 1.5%;
   color: #fafafa;
 }
 
@@ -215,7 +236,6 @@ main button:hover {
 ****************** */
 
 .background_form {
-  /* width: 50%; */
   margin-top: 2%;
   padding: 20px;
   background-color: #fafafa;
@@ -225,7 +245,6 @@ main button:hover {
 }
 
 .background_form p {
-  font-size: 20px;
   font-weight: bold;
   text-align: center;
 }
@@ -236,12 +255,12 @@ form {
 }
 
 form label {
-  font-size: 20px;
+  font-size: 1em;
   margin-bottom: 5px;
 }
 
 form input {
-  font-size: 20px;
+  font-size: 1em;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #7d7d7d;
@@ -251,7 +270,7 @@ form input {
 form input[type="submit"] {
   background-color: #47b5ff;
   color: #fafafa;
-  font-size: 20px;
+  font-size: 1em;
   font-weight: bold;
   padding: 10px;
   margin-bottom: 5px;
@@ -332,22 +351,51 @@ form input[type="submit"]:hover {
 }
 
 #droit {
+  display: block;
+  margin-bottom: 1%;
+  background-color: #5b5b5b;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+#droit > section {
+  /* height: 100%; */
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
+  align-content: center;
+  gap: 2%;
+}
+
+#droit .background_form {
+  margin: 0;
+  padding: 0;
 }
 
 #droit section {
-  flex-basis: 40%;
+  flex-basis: 30%;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 #formUsersTasks > select {
-  font-size: 20px;
+  font-size: 1em;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #7d7d7d;
   border-radius: 5px;
+}
+
+#addTask {
+  /* height: 15vh; */
+  width: 60%;
+  margin: auto;
+}
+
+#addTask h2 {
+  margin-top: 0.5%;
+  margin-bottom: 2%;
 }
 
 .toggle {
@@ -369,6 +417,18 @@ form input[type="submit"]:hover {
   align-items: center;
 }
 
+#lists {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: start;
+  gap: 2%;
+}
+
+#lists > * {
+  flex-basis: 40%;
+}
+
 #toDo,
 #done {
   display: flex;
@@ -380,7 +440,7 @@ form input[type="submit"]:hover {
 
 #toDo > *,
 #done > * {
-  flex: 1 1 500px;
+  flex: 1 1 300px;
 }
 
 .section_Task {
@@ -399,4 +459,17 @@ form input[type="submit"]:hover {
 .fa-xmark {
   color: red;
   cursor: pointer;
+}
+
+/* Media pour les lists */
+@media screen and (max-width: 800px) {
+  #lists {
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #lists > * {
+    flex-basis: 100%;
+  }
 }

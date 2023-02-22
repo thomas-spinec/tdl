@@ -250,7 +250,7 @@ window.addEventListener("load", function () {
           if (response == "ok") {
             // console.log("ok");
             // on display a nouveau les users
-            getUsers();
+            getUsers(idConnected);
           } else {
             formTask.nextElementSibling.innerHTML =
               "Une erreur est survenuelors de l'ajout des droits";

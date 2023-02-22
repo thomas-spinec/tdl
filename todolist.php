@@ -35,32 +35,34 @@
         <section class="centrage">
             <section id="todolist">
                 <section id="droit">
-                    <section class="background_form">
-                        <div class="toggle">
-                            <h2>donner les droits</h2>
-                            <input type="checkbox" name="" id="slideRights">
-                        </div>
-                        <form action="" id="formRights">
-                            <div id="usersRights"></div>
-                            <input type="submit" value="donner les droits" name="send" id="btnRights">
-                        </form>
-                    </section>
-                    <section class="background_form">
-                        <div class="toggle">
-                            <h2>modifier les tâches de :</h2>
-                            <input type="checkbox" name="" id="slideUsersTasks">
-                        </div>
-                        <!-- Menu déroulant qui contiendra ceux qu'on peux gérer -->
-                        <form action="" id="formUsersTasks">
-                            <select name="user" id="usersTasks">
-                            </select>
-                            <input type="submit" value="modifier les tâches" name="send" id="btnUserTasks">
-                        </form>
+                    <section>
+                        <section class="background_form">
+                            <div class="toggle">
+                                <h4>donner les droits</h4>
+                                <input type="checkbox" name="" id="slideRights">
+                            </div>
+                            <form action="" id="formRights">
+                                <div id="usersRights"></div>
+                                <input type="submit" value="donner les droits" name="send" id="btnRights">
+                            </form>
+                        </section>
+                        <section class="background_form">
+                            <div class="toggle">
+                                <h4>modifier les tâches de :</h4>
+                                <input type="checkbox" name="" id="slideUsersTasks">
+                            </div>
+                            <!-- Menu déroulant qui contiendra ceux qu'on peux gérer -->
+                            <form action="" id="formUsersTasks">
+                                <select name="user" id="usersTasks">
+                                </select>
+                                <input type="submit" value="modifier les tâches" name="send" id="btnUserTasks">
+                            </form>
 
+                        </section>
                     </section>
                 </section>
-                <section class="background_form">
-                    <h1 id="title">ToDoList de <?= $user->getLogin() ?></h1>
+                <section class="background_form" id="addTask">
+                    <h2 id="title">ToDoList de <?= $user->getLogin() ?></h2>
                     <form action="" method="post" id="formTask">
                         <label for="task">Tâche:</label>
                         <input type="text" name="task" class="task" placeholder="Tâche" required>
@@ -69,20 +71,22 @@
                     </form>
                     <p></p>
                 </section>
-                <section class="background_form">
-                    <div class="toggle">
-                        <h2>A Faire</h2>
-                        <input type="checkbox" name="" id="slideToDo" checked>
-                    </div>
-                    <section id="toDo">
+                <section id="lists">
+                    <section class="background_form">
+                        <div class="toggle">
+                            <h2>A Faire</h2>
+                            <input type="checkbox" name="" id="slideToDo" checked>
+                        </div>
+                        <section id="toDo">
+                        </section>
                     </section>
-                </section>
-                <section class="background_form">
-                    <div class="toggle">
-                        <h2>Finies</h2>
-                        <input type="checkbox" name="" id="slideDone" checked>
-                    </div>
-                    <section id="done">
+                    <section class="background_form">
+                        <div class="toggle">
+                            <h2>Finies</h2>
+                            <input type="checkbox" name="" id="slideDone" checked>
+                        </div>
+                        <section id="done">
+                        </section>
                     </section>
                 </section>
             </section>
