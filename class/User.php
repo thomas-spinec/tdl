@@ -79,7 +79,6 @@ class User
         // préparation de la requête
         $insert = $this->bdd->prepare($requete);
 
-
         // exécution de la requête avec liaison des paramètres
 
         $insert->execute(array(
